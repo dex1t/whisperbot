@@ -5,6 +5,9 @@
   "repository": "git@github.com:dex1t/whisperbot.git",
   "author": "dex1t <dex1t@deg.ooo>",
   "license": "MIT",
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
     "@slack/bolt": "^1.5.0"
   }
