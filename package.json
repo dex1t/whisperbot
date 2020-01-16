@@ -10,7 +10,10 @@
     "start": "node ./dist/index.js"
   },
   "dependencies": {
-    "@slack/bolt": "^1.5.0",
-    "typescript": "^3.7.5"
+    "@slack/bolt": "^1.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.5",
+    "ts-node": "^8.6.2"
   }
 }
