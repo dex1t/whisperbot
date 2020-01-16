@@ -12,7 +12,8 @@
     "tunnel": "ngrok http 3000 -subdomain=whisperbot"
   },
   "dependencies": {
-    "@slack/bolt": "^1.5.0"
+    "@slack/bolt": "^1.5.0",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2",

@@ -1,4 +1,4 @@
-import { app } from "../bolt";
+import { app } from "../index";
 
 export default function() {
   app.command(`/echo`, async ({ command, ack, say }) => {
