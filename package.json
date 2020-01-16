@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "prestart": "npx tsc -p .",
-    "start": "node ./dist/index.js"
+    "start": "node ./dist/index.js",
+    "dev": "node --inspect -r ts-node/register ./src/index.ts"
   },
   "dependencies": {
     "@slack/bolt": "^1.5.0"
