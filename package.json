@@ -9,6 +9,7 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "@slack/bolt": "^1.5.0"
+    "@slack/bolt": "^1.5.0",
+    "typescript": "^3.7.5"
   }
 }

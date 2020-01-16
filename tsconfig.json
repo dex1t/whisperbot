@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017",
+    "noImplicitAny": false
+  },
+  "compileOnSave": true,
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
