@@ -1,7 +1,7 @@
 import { receiver, app, intercomClient } from "../index";
 import { lookupSlackIdByEmail } from "../utils";
 
-const CHANNEL = "CSN74GSQ5";
+const CHANNEL = "CSN74GSQ5"; // FIXME
 
 const notifyPing = async () => {
   app.client.chat.postMessage({
