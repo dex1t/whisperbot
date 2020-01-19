@@ -2,13 +2,18 @@ import { App, ExpressReceiver } from "@slack/bolt";
 import { Store } from "./store";
 import slashCommands from "./features/slashCommands";
 import intercomWebhook from "./features/intercomWebhook";
-const bodyParser = require("body-parser");
-const xhub = require("express-x-hub");
+
+const Intercom = require("intercom-client");
+export const intercomClient = new Intercom.Client({
+  token: process.env.INTERCOM_ACCESS_TOKEN
+});
 
 export const receiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 
+const bodyParser = require("body-parser");
+const xhub = require("express-x-hub");
 receiver.app.use(bodyParser.urlencoded({ extended: true }));
 receiver.app.use(
   xhub({ algorithm: "sha1", secret: process.env.INTERCOM_CLIENT_SECRET })
