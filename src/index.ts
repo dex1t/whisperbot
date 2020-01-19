@@ -1,6 +1,6 @@
 import { App } from "@slack/bolt";
 import { Store } from "./store";
-import echo from "./features/command";
+import slashCommands from "./features/slashCommands";
 
 export const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -19,4 +19,4 @@ const store = new Store({
   console.log(`⚡️ Bolt app is running!`);
 })();
 
-echo();
+slashCommands();
