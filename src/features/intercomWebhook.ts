@@ -1,12 +1,14 @@
 import { receiver, app } from "../index";
 
 const CHANNEL = "CSN74GSQ5";
-const SUPPORT_TOPICS = [
-  "ping", // test topic from developer hub
-  "conversation.user.created",
-  "conversation.user.replied",
-  "conversation.admin.replied"
-];
+
+const notifyPing = () => {
+  app.client.chat.postMessage({
+    token: process.env.SLACK_BOT_TOKEN,
+    text: "pong",
+    channel: CHANNEL
+  });
+};
 
 export default function() {
   receiver.app.get("/", (req, res) => {
@@ -23,22 +25,16 @@ export default function() {
     }
 
     const body = req.body;
-    let msg = "";
-    if (!SUPPORT_TOPICS.includes(body.topic)) {
-      console.warn(`${body.topic} is not supported.`);
-      return;
-    }
-
     switch (body.topic) {
       case "ping":
-        msg = "pong";
+        notifyPing();
         break;
+      case "conversation.user.created":
+      case "conversation.user.replied":
+      case "conversation.admin.replied":
+        break;
+      default:
+        console.warn(`${body.topic} is not supported.`);
     }
-
-    app.client.chat.postMessage({
-      token: process.env.SLACK_BOT_TOKEN,
-      text: msg,
-      channel: CHANNEL
-    });
   });
 }
