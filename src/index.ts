@@ -26,15 +26,13 @@ export const app = new App({
   receiver
 });
 
-const store = new Store({
+export const store = new Store({
   port: 6379,
-  host: "localhost"
+  host: process.env.REDIS_HOST
 });
 
 (async () => {
   const server = await app.start(process.env.PORT || 3000);
-  console.log(await store.saveByChannel("100", "hellooo"));
-  console.log(await store.loadByChannel("100"));
   console.log(`⚡️ Bolt app is running!`);
 })();
 

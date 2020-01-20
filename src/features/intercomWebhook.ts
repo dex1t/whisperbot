@@ -1,4 +1,4 @@
-import { receiver, app, intercomClient } from "../index";
+import { receiver, app, intercomClient, store } from "../index";
 import { lookupSlackIdByEmail } from "../utils";
 import { newConversationBlocks } from "../views/newConversation";
 
@@ -25,20 +25,20 @@ const notifyNewConversation = async item => {
     const slackUserID = await lookupSlackIdByEmail(item.assignee.email);
     assignee = slackUserID ? slackUserID : item.assignee.name;
   }
-  console.log(item);
-  console.log(user.custom_attributes.avatar);
 
-  app.client.chat.postMessage({
+  const res = await app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
+    channel: CHANNEL,
     text: "",
-    blocks: newConversationBlocks({ item, company, user, assignee }),
-    channel: CHANNEL
+    blocks: newConversationBlocks({ item, company, user, assignee })
   });
+  if (res.ts && item.id) {
+    store.saveTsByConv({ ts: res.ts as string, convId: item.id });
+  }
 };
 
-const notifyReplyConversation = item => {
-  console.log(item.user);
-  console.log(item.assignee);
+const notifyReplyConversation = async item => {
+  console.log(item);
   console.log(item.conversation_parts);
 };
 
@@ -62,16 +62,14 @@ export default function() {
         notifyPing();
         break;
       case "conversation.user.created":
-        console.log(body);
         notifyNewConversation(body.data.item);
         break;
       case "conversation.user.replied":
       case "conversation.admin.replied":
-        console.log(body);
         notifyReplyConversation(body.data.item);
         break;
       default:
-        console.warn(`${body.topic} is not supported.`);
+        console.log(`${body.topic} is not supported.`);
     }
   });
 }
