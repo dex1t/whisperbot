@@ -5,17 +5,23 @@ const CONVERSATIONS_NAMESPACE = "whisperbot:conversations";
 
 export class Store {
   private readonly redis: IORedis.Redis;
+  linkedChannel: string | null;
 
   constructor(options?: IORedis.RedisOptions) {
     this.redis = new IORedis(options);
+    this.linkedChannel = null;
   }
 
   async saveLinkingChannel(params: { channelId: string }): Promise<string> {
+    this.linkedChannel = params.channelId;
     return await this.redis.set(CHANNEL_NAMESPACE, params.channelId);
   }
 
-  async loadLinkingChannel(): Promise<string | null> {
-    return await this.redis.get(CHANNEL_NAMESPACE);
+  async loadLinkedChannel(): Promise<string | null> {
+    if (!this.linkedChannel) {
+      this.linkedChannel = await this.redis.get(CHANNEL_NAMESPACE);
+    }
+    return this.linkedChannel;
   }
 
   async saveTsByConv(params: {

@@ -4,13 +4,12 @@ export default function() {
   app.command(`/whisperbot-status`, async ({ command, ack, respond }) => {
     ack();
 
-    const channelId = await store.loadLinkingChannel();
     let counts = await intercomClient.counts.appCounts();
     counts = counts.body;
 
-    if (channelId) {
+    if (store.linkedChannel) {
       respond({
-        text: `Linked <#${channelId}> to Intercom \`(${counts.company.count} companies, ${counts.user.count} users)\``,
+        text: `Linked <#${store.linkedChannel}> to Intercom \`(${counts.company.count} companies, ${counts.user.count} users)\``,
         response_type: "ephemeral"
       });
     } else {

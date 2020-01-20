@@ -8,6 +8,7 @@ export const store = new Store({
   port: 6379,
   host: process.env.REDIS_HOST
 });
+store.loadLinkedChannel();
 
 // Setup intercom-client
 const Intercom = require("intercom-client");

@@ -1,13 +1,11 @@
 import { app, intercomClient, store } from "../../index";
 import { closedOpsBlock, internalNoteBlock } from "../../views/staffOps";
 
-const CHANNEL = "CSN74GSQ5"; // FIXME
-
 export const notifyPing = async () => {
   app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
     text: "pong",
-    channel: CHANNEL
+    channel: store.linkedChannel
   });
 };
 
@@ -23,7 +21,7 @@ export const closedConversation = async item => {
 
   app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
-    channel: CHANNEL,
+    channel: store.linkedChannel,
     text: "closed conversation",
     blocks,
     thread_ts: ts,
@@ -33,7 +31,6 @@ export const closedConversation = async item => {
 };
 
 export const addInternalNote = async item => {
-  console.log(item.conversation_parts);
   const ts = await store.loadTsByConv({ convId: item.id });
 
   const author = item.conversation_parts.conversation_parts[0].author;
@@ -45,7 +42,7 @@ export const addInternalNote = async item => {
 
   app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
-    channel: CHANNEL,
+    channel: store.linkedChannel,
     text: "📝 *スタッフ用メモ*",
     attachments: [
       {

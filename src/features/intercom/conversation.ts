@@ -6,8 +6,6 @@ import {
 } from "../../views/newConversation";
 import { newReplyBlock } from "../../views/newReply";
 
-const CHANNEL = "CSN74GSQ5"; // FIXME
-
 export const notifyNewConversation = async item => {
   let user = await intercomClient.users.find({ id: item.user.id });
   let company = await intercomClient.companies.find({
@@ -24,7 +22,7 @@ export const notifyNewConversation = async item => {
 
   const res = await app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
-    channel: CHANNEL,
+    channel: store.linkedChannel,
     text: "new conversation",
     blocks: newConversationBlock({ item, user }),
     attachments: [
@@ -54,7 +52,7 @@ export const notifyReplyConversation = async item => {
 
   const res = await app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
-    channel: CHANNEL,
+    channel: store.linkedChannel,
     text: "new reply",
     blocks,
     thread_ts: ts,
