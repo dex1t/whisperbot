@@ -47,7 +47,7 @@ export const internalNoteBlock = (params: { item: any; staff: any }) => {
         },
         {
           type: "mrkdwn",
-          text: `*${params.staff.name}が操作* | <${params.item.links.conversation_web}|Open Intercom>`
+          text: `*${params.staff.name}が記入* | <${params.item.links.conversation_web}|Open Intercom>`
         }
       ]
     }
