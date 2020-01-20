@@ -1,6 +1,8 @@
 # whisperbot
 a Slack bot to interact with Intercom for myself 📞:robot:
 
+<img src='https://user-images.githubusercontent.com/870741/72726798-aa045800-3bcc-11ea-983f-f5a66bb4b680.png' width='250px'>
+
 ## Deployment
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
