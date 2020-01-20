@@ -1,5 +1,6 @@
 import { receiver, app, intercomClient } from "../index";
 import { lookupSlackIdByEmail } from "../utils";
+import { newConversationBlocks } from "../views/newConversation";
 
 const CHANNEL = "CSN74GSQ5"; // FIXME
 
@@ -20,23 +21,17 @@ const notifyNewConversation = async item => {
   company = company.body;
 
   let assignee = null;
-  if (item.assignee) {
+  if (item.assignee.type != "nobody_admin") {
     const slackUserID = await lookupSlackIdByEmail(item.assignee.email);
     assignee = slackUserID ? slackUserID : item.assignee.name;
   }
+  console.log(item);
+  console.log(user.custom_attributes.avatar);
 
   app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
-    text: `
-    社名: ${company.name} (${company.custom_attributes.subdomain})
-    アカウント数: ${company.user_count}
-    名前: ${user.name}
-    Mixpanel: ${user.user_id}
-    ロール: ${user.custom_attributes.accountType}
-    platform: ${user.custom_attributes.platform}
-    内容: ${item.conversation_message.body}
-    アサイン: <@${assignee}>
-    `,
+    text: "",
+    blocks: newConversationBlocks({ item, company, user, assignee }),
     channel: CHANNEL
   });
 };
