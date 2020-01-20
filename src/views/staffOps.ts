@@ -1,7 +1,6 @@
 import { fetchAvatarUrl } from "../utils";
 
 export const closedOpsBlock = (params: { item: any; staff: any }) => {
-  console.log(params.item);
   return [
     {
       type: "section",
