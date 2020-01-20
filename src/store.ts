@@ -24,4 +24,8 @@ export class Store {
   async loadTsByConv(params: { convId: string }): Promise<string | null> {
     return await this.redis.hget(CONVERSATIONS_NAMESPACE, params.convId);
   }
+
+  async deleteByConv(params: { convId: string }): Promise<number> {
+    return await this.redis.hdel(CONVERSATIONS_NAMESPACE, params.convId);
+  }
 }

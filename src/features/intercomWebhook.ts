@@ -5,6 +5,7 @@ import {
   newConversationMetaBlock
 } from "../views/newConversation";
 import { newReplyBlock } from "../views/newReply";
+import { closedOpsBlock } from "../views/staffOps";
 
 const CHANNEL = "CSN74GSQ5"; // FIXME
 
@@ -65,6 +66,23 @@ const notifyReplyConversation = async item => {
   }
 };
 
+const closedConversation = async item => {
+  const ts = await store.loadTsByConv({ convId: item.id });
+  let user = await intercomClient.users.find({ id: item.user.id });
+  user = user.body;
+  console.log(item);
+
+  const res = await app.client.chat.postMessage({
+    token: process.env.SLACK_BOT_TOKEN,
+    channel: CHANNEL,
+    text: "closed conversation",
+    blocks: closedOpsBlock({ item, user }),
+    thread_ts: ts,
+    reply_broadcast: true
+  });
+  store.deleteByConv({ convId: item.id });
+};
+
 export default function() {
   receiver.app.get("/", (req, res) => {
     res.status(200).send("It Works!");
@@ -90,6 +108,9 @@ export default function() {
       case "conversation.user.replied":
       case "conversation.admin.replied":
         notifyReplyConversation(body.data.item);
+        break;
+      case "conversation.admin.closed":
+        closedConversation(body.data.item);
         break;
       default:
         console.log(`${body.topic} is not supported.`);
