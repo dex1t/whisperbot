@@ -1,13 +1,14 @@
 export const newConversationBlock = (params: { item: any; user: any }) => {
+  let text = params.item.conversation_message.body;
+  text = text
+    .replace(/\<img\ssrc=["'](.*)["']>/g, "$1")
+    .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, "");
   return [
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: params.item.conversation_message.body.replace(
-          /<("[^"]*"|'[^']*'|[^'">])*>/g,
-          ""
-        )
+        text
       }
     },
     {
