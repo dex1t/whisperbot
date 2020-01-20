@@ -4,7 +4,7 @@ export const closedOpsBlock = (params: { item: any; staff: any }) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `✅ *${params.item.user.name}との会話をCloseしました*`
+        text: `✅ *${params.item.user.name}との会話をクローズしました*`
       }
     },
     {
