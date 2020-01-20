@@ -61,7 +61,7 @@ const notifyReplyConversation = async item => {
     thread_ts: ts,
     reply_broadcast: true
   });
-  if (!ts) {
+  if (!ts && res.ts) {
     store.saveTsByConv({ ts: res.ts as string, convId: item.id });
   }
 };
@@ -70,9 +70,8 @@ const closedConversation = async item => {
   const ts = await store.loadTsByConv({ convId: item.id });
   let user = await intercomClient.users.find({ id: item.user.id });
   user = user.body;
-  console.log(item);
 
-  const res = await app.client.chat.postMessage({
+  app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
     channel: CHANNEL,
     text: "closed conversation",
