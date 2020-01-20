@@ -7,7 +7,7 @@ export class Store {
   private readonly redis: IORedis.Redis;
   linkedChannel: string | null;
 
-  constructor(options?: IORedis.RedisOptions) {
+  constructor(options) {
     this.redis = new IORedis(options);
     this.linkedChannel = null;
   }

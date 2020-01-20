@@ -4,10 +4,12 @@ import slashCommands from "./features/slashCommands";
 import webhookEndpoints from "./features/webhookEndpoints";
 
 // Setup redis
-export const store = new Store({
-  port: 6379,
-  host: process.env.REDIS_HOST || process.env.REDISTOGO_URL
-});
+export const store = new Store(
+  process.env.REDISTOGO_URL || {
+    port: 6379,
+    host: process.env.REDIS_HOST
+  }
+);
 store.loadLinkedChannel();
 
 // Setup intercom-client
