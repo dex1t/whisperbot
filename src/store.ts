@@ -10,6 +10,14 @@ export class Store {
     this.redis = new IORedis(options);
   }
 
+  async saveLinkingChannel(params: { channelId: string }): Promise<string> {
+    return await this.redis.set(CHANNEL_NAMESPACE, params.channelId);
+  }
+
+  async loadLinkingChannel(): Promise<string | null> {
+    return await this.redis.get(CHANNEL_NAMESPACE);
+  }
+
   async saveTsByConv(params: {
     ts: string;
     convId: string;
