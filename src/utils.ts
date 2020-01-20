@@ -13,3 +13,12 @@ export const lookupSlackIdByEmail = async (email: string) => {
     }
   }
 };
+
+export const fetchAvatarUrl = user => {
+  return (
+    user.custom_attributes.avatar ||
+    `https://dummyimage.com/150x150/${Number(user.created_at).toString(
+      16
+    )}/ffffff.png&text=no+photo`
+  );
+};

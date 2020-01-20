@@ -1,3 +1,5 @@
+import { fetchAvatarUrl } from "../utils";
+
 export const newConversationBlock = (params: { item: any; user: any }) => {
   let text = params.item.conversation_message.body;
   text = text
@@ -61,7 +63,7 @@ export const newConversationMetaBlock = (params: {
       ],
       accessory: {
         type: "image",
-        image_url: params.user.custom_attributes.avatar,
+        image_url: fetchAvatarUrl(params.user),
         alt_text: "avatar"
       }
     }

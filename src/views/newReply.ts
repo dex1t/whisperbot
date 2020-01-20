@@ -1,3 +1,5 @@
+import { fetchAvatarUrl } from "../utils";
+
 export const newReplyBlock = (params: { item: any; user: any }) => {
   let text = params.item.conversation_parts.conversation_parts[0].body;
   text = text
@@ -16,7 +18,7 @@ export const newReplyBlock = (params: { item: any; user: any }) => {
       elements: [
         {
           type: "image",
-          image_url: params.user.custom_attributes.avatar,
+          image_url: fetchAvatarUrl(params.user),
           alt_text: "avatar"
         },
         {
