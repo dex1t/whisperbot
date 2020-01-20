@@ -1,11 +1,13 @@
 import { fetchAvatarUrl } from "../utils";
-export const closedOpsBlock = (params: { item: any; user: any }) => {
+
+export const closedOpsBlock = (params: { item: any; staff: any }) => {
+  console.log(params.item);
   return [
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "✅ メッセージをCloseしました"
+        text: `✅ *${params.item.user.name}との会話をCloseしました*`
       }
     },
     {
@@ -13,12 +15,12 @@ export const closedOpsBlock = (params: { item: any; user: any }) => {
       elements: [
         {
           type: "image",
-          image_url: fetchAvatarUrl(params.user),
+          image_url: params.staff.avatar.image_url,
           alt_text: "avatar"
         },
         {
           type: "mrkdwn",
-          text: `*${params.user.name}が操作* <${params.item.links.conversation_web}|View in Intercom>`
+          text: `*${params.staff.name}が操作* | <${params.item.links.conversation_web}|Open Intercom>`
         }
       ]
     }

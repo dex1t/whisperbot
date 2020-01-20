@@ -54,10 +54,10 @@ const notifyReplyConversation = async item => {
   const author = item.conversation_parts.conversation_parts[0].author;
   let blocks = [];
   if (author.type == "user") {
-    let user = await intercomClient.users.find({ id: author.id });
+    const user = await intercomClient.users.find({ id: author.id });
     blocks = newReplyBlock({ item, user: user.body });
   } else {
-    let staff = await intercomClient.admins.find(author.id);
+    const staff = await intercomClient.admins.find(author.id);
     blocks = newReplyBlock({ item, user: staff.body });
   }
 
@@ -76,14 +76,19 @@ const notifyReplyConversation = async item => {
 
 const closedConversation = async item => {
   const ts = await store.loadTsByConv({ convId: item.id });
-  let user = await intercomClient.users.find({ id: item.user.id });
-  user = user.body;
+
+  const author = item.conversation_parts.conversation_parts[0].author;
+  let blocks = [];
+  if (author.type == "admin") {
+    const staff = await intercomClient.admins.find(author.id);
+    blocks = closedOpsBlock({ item, staff: staff.body });
+  }
 
   app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
     channel: CHANNEL,
     text: "closed conversation",
-    blocks: closedOpsBlock({ item, user }),
+    blocks,
     thread_ts: ts,
     reply_broadcast: true
   });

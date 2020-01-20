@@ -28,7 +28,7 @@ export const newReplyBlock = (params: { item: any; user: any }) => {
         },
         {
           type: "mrkdwn",
-          text: `*${params.user.name}が返信* <${params.item.links.conversation_web}|View in Intercom>`
+          text: `*${params.user.name}が返信* | <${params.item.links.conversation_web}|Open Intercom>`
         }
       ]
     }
