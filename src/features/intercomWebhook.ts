@@ -4,6 +4,7 @@ import {
   newConversationBlock,
   newConversationMetaBlock
 } from "../views/newConversation";
+import { newReplyBlock } from "../views/newReply";
 
 const CHANNEL = "CSN74GSQ5"; // FIXME
 
@@ -36,7 +37,7 @@ const notifyNewConversation = async item => {
     blocks: newConversationBlock({ item }),
     attachments: [
       {
-        color: "#0448F7",
+        color: "#286efa",
         blocks: newConversationMetaBlock({ company, user, assignee })
       }
     ]
@@ -47,8 +48,18 @@ const notifyNewConversation = async item => {
 };
 
 const notifyReplyConversation = async item => {
-  console.log(item);
-  console.log(item.conversation_parts);
+  const ts = await store.loadTsByConv({ convId: item.id });
+  const res = await app.client.chat.postMessage({
+    token: process.env.SLACK_BOT_TOKEN,
+    channel: CHANNEL,
+    text: "new reply",
+    blocks: newReplyBlock({ item }),
+    thread_ts: ts,
+    reply_broadcast: true
+  });
+  if (!ts && item.id) {
+    store.saveTsByConv({ ts: res.ts as string, convId: item.id });
+  }
 };
 
 export default function() {
