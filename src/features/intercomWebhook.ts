@@ -49,11 +49,14 @@ const notifyNewConversation = async item => {
 
 const notifyReplyConversation = async item => {
   const ts = await store.loadTsByConv({ convId: item.id });
+  let user = await intercomClient.users.find({ id: item.user.id });
+  user = user.body;
+
   const res = await app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
     channel: CHANNEL,
     text: "new reply",
-    blocks: newReplyBlock({ item }),
+    blocks: newReplyBlock({ item, user }),
     thread_ts: ts,
     reply_broadcast: true
   });

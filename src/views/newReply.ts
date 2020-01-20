@@ -1,4 +1,4 @@
-export const newReplyBlock = (params: { item: any }) => {
+export const newReplyBlock = (params: { item: any; user: any }) => {
   return [
     {
       type: "section",
@@ -14,8 +14,13 @@ export const newReplyBlock = (params: { item: any }) => {
       type: "context",
       elements: [
         {
+          type: "image",
+          image_url: params.user.custom_attributes.avatar,
+          alt_text: "avatar"
+        },
+        {
           type: "mrkdwn",
-          text: `<${params.item.links.conversation_web}|View in Intercom>`
+          text: `*${params.user.name}が返信* <${params.item.links.conversation_web}|View in Intercom>`
         }
       ]
     }
