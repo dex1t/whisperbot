@@ -34,7 +34,7 @@ const notifyNewConversation = async item => {
     token: process.env.SLACK_BOT_TOKEN,
     channel: CHANNEL,
     text: "new conversation",
-    blocks: newConversationBlock({ item }),
+    blocks: newConversationBlock({ item, user }),
     attachments: [
       {
         color: "#286efa",

@@ -1,4 +1,4 @@
-export const newConversationBlock = (params: { item: any }) => {
+export const newConversationBlock = (params: { item: any; user: any }) => {
   return [
     {
       type: "section",
@@ -15,7 +15,7 @@ export const newConversationBlock = (params: { item: any }) => {
       elements: [
         {
           type: "mrkdwn",
-          text: `<${params.item.links.conversation_web}|View in Intercom>`
+          text: `💁‍♂️ ${params.user.name}さんから新規メッセージ <${params.item.links.conversation_web}|View in Intercom>`
         }
       ]
     }
