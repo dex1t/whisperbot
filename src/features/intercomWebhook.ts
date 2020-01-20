@@ -5,7 +5,7 @@ import {
   newConversationMetaBlock
 } from "../views/newConversation";
 import { newReplyBlock } from "../views/newReply";
-import { closedOpsBlock } from "../views/staffOps";
+import { closedOpsBlock, internalNoteBlock } from "../views/staffOps";
 
 const CHANNEL = "CSN74GSQ5"; // FIXME
 
@@ -95,6 +95,32 @@ const closedConversation = async item => {
   store.deleteByConv({ convId: item.id });
 };
 
+const addInternalNote = async item => {
+  console.log(item.conversation_parts);
+  const ts = await store.loadTsByConv({ convId: item.id });
+
+  const author = item.conversation_parts.conversation_parts[0].author;
+  let blocks = [];
+  if (author.type == "admin") {
+    const staff = await intercomClient.admins.find(author.id);
+    blocks = internalNoteBlock({ item, staff: staff.body });
+  }
+
+  app.client.chat.postMessage({
+    token: process.env.SLACK_BOT_TOKEN,
+    channel: CHANNEL,
+    text: "📝 *スタッフ用メモ*",
+    attachments: [
+      {
+        color: "#fbc916",
+        blocks
+      }
+    ],
+    thread_ts: ts,
+    reply_broadcast: true
+  });
+};
+
 export default function() {
   receiver.app.get("/", (req, res) => {
     res.status(200).send("It Works!");
@@ -123,6 +149,9 @@ export default function() {
         break;
       case "conversation.admin.closed":
         closedConversation(body.data.item);
+        break;
+      case "conversation.admin.noted":
+        addInternalNote(body.data.item);
         break;
       default:
         console.log(`${body.topic} is not supported.`);
