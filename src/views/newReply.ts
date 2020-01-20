@@ -5,6 +5,11 @@ export const newReplyBlock = (params: { item: any; user: any }) => {
   text = text
     .replace(/\<img\ssrc=["'](.*)["']>/g, "$1")
     .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, "");
+
+  const image_url =
+    params.user.type == "user"
+      ? fetchAvatarUrl(params.user)
+      : params.user.avatar.image_url;
   return [
     {
       type: "section",
@@ -18,7 +23,7 @@ export const newReplyBlock = (params: { item: any; user: any }) => {
       elements: [
         {
           type: "image",
-          image_url: fetchAvatarUrl(params.user),
+          image_url,
           alt_text: "avatar"
         },
         {

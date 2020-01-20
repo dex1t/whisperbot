@@ -50,14 +50,22 @@ const notifyNewConversation = async item => {
 
 const notifyReplyConversation = async item => {
   const ts = await store.loadTsByConv({ convId: item.id });
-  let user = await intercomClient.users.find({ id: item.user.id });
-  user = user.body;
+
+  const author = item.conversation_parts.conversation_parts[0].author;
+  let blocks = [];
+  if (author.type == "user") {
+    let user = await intercomClient.users.find({ id: author.id });
+    blocks = newReplyBlock({ item, user: user.body });
+  } else {
+    let staff = await intercomClient.admins.find(author.id);
+    blocks = newReplyBlock({ item, user: staff.body });
+  }
 
   const res = await app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
     channel: CHANNEL,
     text: "new reply",
-    blocks: newReplyBlock({ item, user }),
+    blocks,
     thread_ts: ts,
     reply_broadcast: true
   });
