@@ -1,3 +1,4 @@
+import { fetchAvatarUrl } from "../utils";
 export const closedOpsBlock = (params: { item: any; user: any }) => {
   return [
     {
@@ -12,7 +13,7 @@ export const closedOpsBlock = (params: { item: any; user: any }) => {
       elements: [
         {
           type: "image",
-          image_url: params.user.custom_attributes.avatar,
+          image_url: fetchAvatarUrl(params.user),
           alt_text: "avatar"
         },
         {

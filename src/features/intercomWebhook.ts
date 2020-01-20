@@ -43,7 +43,7 @@ const notifyNewConversation = async item => {
       }
     ]
   });
-  if (res.ts && item.id) {
+  if (res.ts) {
     store.saveTsByConv({ ts: res.ts as string, convId: item.id });
   }
 };
@@ -61,7 +61,7 @@ const notifyReplyConversation = async item => {
     thread_ts: ts,
     reply_broadcast: true
   });
-  if (!ts && item.id) {
+  if (!ts) {
     store.saveTsByConv({ ts: res.ts as string, convId: item.id });
   }
 };
