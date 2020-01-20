@@ -1,0 +1,25 @@
+{
+  "name": "whisperbot",
+  "description": "a Slack Bot to interact with Intercom",
+  "keywords": ["ChatBot", "Slack", "Intercom"],
+  "repository": "https://github.com/dex1t/whisperbot",
+  "logo": "https://raw.githubusercontent.com/dex1t/whisperbot/master/icon.png",
+  "env": {
+    "SLACK_SIGNING_SECRET": {
+      "description": "https://api.slack.com/apps"
+    },
+    "SLACK_BOT_TOKEN": {
+      "description": "https://api.slack.com/apps"
+    },
+    "INTERCOM_ACCESS_TOKEN": {
+      "description": "https://developers.intercom.com/"
+    },
+    "INTERCOM_CLIENT_SECRET": {
+      "description": "https://developers.intercom.com/"
+    },
+    "MIXPANEL_REPORT_ID": {
+      "description": "Optional"
+    }
+  },
+  "addons": ["redistogo:nano"]
+}

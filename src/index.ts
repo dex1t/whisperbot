@@ -6,7 +6,7 @@ import webhookEndpoints from "./features/webhookEndpoints";
 // Setup redis
 export const store = new Store({
   port: 6379,
-  host: process.env.REDIS_HOST
+  host: process.env.REDIS_HOST || process.env.REDISTOGO_URL
 });
 store.loadLinkedChannel();
 
