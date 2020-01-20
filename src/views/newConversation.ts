@@ -1,9 +1,4 @@
-export const newConversationBlocks = (params: {
-  item: any;
-  company: any;
-  user: any;
-  assignee: string | null;
-}) => {
+export const newConversationBlock = (params: { item: any }) => {
   return [
     {
       type: "section",
@@ -23,7 +18,16 @@ export const newConversationBlocks = (params: {
           text: `<${params.item.links.conversation_web}|View in Intercom>`
         }
       ]
-    },
+    }
+  ];
+};
+
+export const newConversationMetaBlock = (params: {
+  company: any;
+  user: any;
+  assignee: string | null;
+}) => {
+  return [
     {
       type: "section",
       fields: [
@@ -49,7 +53,7 @@ export const newConversationBlocks = (params: {
         },
         {
           type: "mrkdwn",
-          text: `*Assign:*\n${
+          text: `*Assignee:*\n${
             params.assignee ? `<@${params.assignee}>` : "No assignment"
           }`
         }

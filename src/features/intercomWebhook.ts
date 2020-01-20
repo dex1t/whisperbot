@@ -1,6 +1,9 @@
 import { receiver, app, intercomClient, store } from "../index";
 import { lookupSlackIdByEmail } from "../utils";
-import { newConversationBlocks } from "../views/newConversation";
+import {
+  newConversationBlock,
+  newConversationMetaBlock
+} from "../views/newConversation";
 
 const CHANNEL = "CSN74GSQ5"; // FIXME
 
@@ -29,8 +32,14 @@ const notifyNewConversation = async item => {
   const res = await app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
     channel: CHANNEL,
-    text: "",
-    blocks: newConversationBlocks({ item, company, user, assignee })
+    text: "new conversation",
+    blocks: newConversationBlock({ item }),
+    attachments: [
+      {
+        color: "#0448F7",
+        blocks: newConversationMetaBlock({ company, user, assignee })
+      }
+    ]
   });
   if (res.ts && item.id) {
     store.saveTsByConv({ ts: res.ts as string, convId: item.id });
