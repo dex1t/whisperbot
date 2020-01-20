@@ -1,7 +1,7 @@
 import { App, ExpressReceiver } from "@slack/bolt";
 import { Store } from "./store";
 import slashCommands from "./features/slashCommands";
-import intercomWebhook from "./features/intercomWebhook";
+import webhookEndpoints from "./features/webhookEndpoints";
 
 const Intercom = require("intercom-client");
 export const intercomClient = new Intercom.Client({
@@ -37,4 +37,4 @@ export const store = new Store({
 })();
 
 slashCommands();
-intercomWebhook();
+webhookEndpoints();
