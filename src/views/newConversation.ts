@@ -50,7 +50,7 @@ export const newConversationBlocks = (params: {
         {
           type: "mrkdwn",
           text: `*Assign:*\n${
-            params.assignee ? `<@${params.assignee}` : "No assignment"
+            params.assignee ? `<@${params.assignee}>` : "No assignment"
           }`
         }
       ],
