@@ -7,12 +7,12 @@ import {
 import { newReplyBlock } from "../../views/newReply";
 
 export const notifyNewConversation = async item => {
-  let user = await intercomClient.users.find({ id: item.user.id });
-  let company = await intercomClient.companies.find({
-    id: user.body.companies.companies[0].id
-  });
-  user = user.body;
-  company = company.body;
+  const user = (await intercomClient.users.find({ id: item.user.id })).body;
+
+  let company;
+  if (user.companies.companies.length > 0) {
+    company = (await intercomClient.companies.find({ id: user.companies.companies[0].id })).body;
+  }
 
   let assignee = null;
   if (item.assignee.type != "nobody_admin") {
@@ -20,18 +20,22 @@ export const notifyNewConversation = async item => {
     assignee = slackUserID ? slackUserID : item.assignee.name;
   }
 
+  let attachments = [];
+  if (user && company) {
+    attachments =[{
+      color: "#286efa",
+      blocks: newConversationMetaBlock({ company, user, assignee })
+    }];
+  }
+
   const res = await app.client.chat.postMessage({
     token: process.env.SLACK_BOT_TOKEN,
     channel: store.linkedChannel,
     text: "new conversation",
     blocks: newConversationBlock({ item, user }),
-    attachments: [
-      {
-        color: "#286efa",
-        blocks: newConversationMetaBlock({ company, user, assignee })
-      }
-    ]
+    attachments,
   });
+
   if (res.ts) {
     store.saveTsByConv({ ts: res.ts as string, convId: item.id });
   }
