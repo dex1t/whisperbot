@@ -18,7 +18,7 @@ export const newConversationBlock = (params: { item: any; user: any }) => {
       elements: [
         {
           type: "mrkdwn",
-          text: `💁‍♂️ *${params.user.name}から新規メッセージ* | <${params.item.links.conversation_web}|Open Intercom>`
+          text: `💁‍♂️ *${params.user.name ?? "ビジター"}から新規メッセージ* | <${params.item.links.conversation_web}|Open Intercom>`
         }
       ]
     }
